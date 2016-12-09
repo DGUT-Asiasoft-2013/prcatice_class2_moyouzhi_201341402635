@@ -22,7 +22,7 @@ public class BootActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_boot);	
+		setContentView(R.layout.activity_boot);
 	}
 	
 	@Override
@@ -36,7 +36,7 @@ public class BootActivity extends Activity {
 //			public void run() {
 //				startLoginActivity();
 //			}
-//		}, 1000);	
+//		}, 1000);
 		
 		OkHttpClient client = new OkHttpClient();
 		
@@ -50,18 +50,18 @@ public class BootActivity extends Activity {
 			public void onResponse(Call arg0, final Response arg1) throws IOException {
 				Log.d("response", arg1.toString());
 				
-//				BootActivity.this.runOnUiThread(new Runnable() {
-//					
-//					@Override
-//					public void run() {
-//						try {
-//							Toast.makeText(BootActivity.this, arg1.body().string(), Toast.LENGTH_SHORT).show();
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//						startLoginActivity();
-//					}
-//				});
+				BootActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							Toast.makeText(BootActivity.this, arg1.body().string(), Toast.LENGTH_SHORT).show();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						startLoginActivity();
+					}
+				});
 				
 			}
 			
@@ -71,11 +71,11 @@ public class BootActivity extends Activity {
 					
 					@Override
 					public void run() {
-						Toast.makeText(BootActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+						Toast.makeText(BootActivity.this, arg1.getLocalizedMessage(), Toast.LENGTH_SHORT).show();						
 					}
 				});
 				
-			}		
+			}
 		});
 	}
 	
