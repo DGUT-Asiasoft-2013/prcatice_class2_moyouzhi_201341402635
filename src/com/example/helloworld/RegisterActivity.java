@@ -2,6 +2,7 @@ package com.example.helloworld;
 
 import java.io.IOException;
 
+import com.example.helloworld.api.Server;
 import com.example.helloworld.fragments.inputcells.PictureInputCellFragment;
 import com.example.helloworld.fragments.inputcells.SimpleTextInputCellFragment;
 
@@ -99,7 +100,7 @@ public class RegisterActivity extends Activity {
 		String name = fragInputName.getText();
 		String email = fragInputEmailAddress.getText();
 
-		OkHttpClient client = new OkHttpClient.Builder().build();
+		OkHttpClient client = Server.getSharedClient();
 
 		MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder()
 				.setType(MultipartBody.FORM)
@@ -107,8 +108,8 @@ public class RegisterActivity extends Activity {
 				.addFormDataPart("name", name)
 				.addFormDataPart("email", email)
 				.addFormDataPart("passwordHash", password);
-				
-		if(fragInputAvatar.getParentFragment()!=null){
+		
+		if(fragInputAvatar.getPngData()!=null){
 			requestBodyBuilder
 			.addFormDataPart(
 					"avatar",
@@ -118,8 +119,7 @@ public class RegisterActivity extends Activity {
 							fragInputAvatar.getPngData()));
 		}
 
-		Request request = new Request.Builder()
-				.url("http://172.27.0.48:8080/membercenter/api/register")
+		Request request = Server.requestBuilderWithApi("register")
 				.method("post", null)
 				.post(requestBodyBuilder.build())
 				.build();
@@ -134,7 +134,7 @@ public class RegisterActivity extends Activity {
 
 			@Override
 			public void onResponse(final Call arg0, final Response arg1) throws IOException {
-				final String responseString = arg1.body().string();  //雷：这个函数必须在后台线程中调用
+				final String responseString = arg1.body().string(); //雷：这个函数必须在后台线程中调用
 				runOnUiThread(new Runnable() {
 					public void run() {
 						progressDialog.dismiss();
